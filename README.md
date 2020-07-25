@@ -3,14 +3,14 @@
 #### If you make any updates update the package.xml with verion number accordingly, and also mention the update in the readme file at the end.
 
 To start simulation in Gazebo
->>> roslaunch WATER_description gazebo.launch
+> roslaunch WATER_description gazebo.launch
 
 To view the model in Rviz
->>> roslaunch WATER_description display.launch
+> roslaunch WATER_description display.launch
 
 To see the camera images from the boat
->>> roalaunch WATER_description gazebo.launch
->>> rosrun WATER_description image_capture
+> roalaunch WATER_description gazebo.launch
+> rosrun WATER_description image_capture
 
 ### Updates Made
 1. Basic Design
