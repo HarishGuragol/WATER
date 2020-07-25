@@ -10,6 +10,7 @@ To view the model in Rviz
 
 To see the camera images from the boat
 > roalaunch WATER_description gazebo.launch
+
 > rosrun WATER_description image_capture
 
 ### Updates Made
