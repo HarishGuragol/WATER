@@ -1,0 +1,15 @@
+WATER_controller:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  # Position Controllers --------------------------------------
+  Rev18_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Rev18
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Rev19_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Rev19
+    pid: {p: 100.0, i: 0.01, d: 10.0}
