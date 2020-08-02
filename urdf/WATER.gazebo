@@ -35,7 +35,7 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="propeller_right_1">
+<gazebo reference="propeller_left_3">
   <material>${body_color}</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
@@ -47,6 +47,60 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+</gazebo>
+
+
+<!--Gazbeo ROS Controller PLugin-->
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_controller.so">
+  </plugin>
+</gazebo>
+
+<!--Differential Drive Plugin-->
+<gazebo>
+  <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+    <alwaysOn>false</alwaysOn>
+    <legacyMode>false</legacyMode>
+    <updateRate>50</updateRate>
+    <leftJoint>Rev18</leftJoint>
+    <rightJoint>Rev19</rightJoint>
+    <wheelSeparation>1</wheelSeparation>
+    <wheelDiameter>0.3</wheelDiameter>
+    <torque>20</torque>
+    <commandTopic>/diff_drive/cmd_vel</commandTopic>
+    <odometryTopic>/diff_drive/odom</odometryTopic>
+    <odometryFrame>odom</odometryFrame>
+    <robotBaseFrame>base_link</robotBaseFrame>
+  </plugin>
+</gazebo>
+
+<!--Try Plugins
+<gazebo>
+  <plugin filename="libsimple_driving_force_plugin.so" name="simple_driving_force_left">
+    <target_link>propeller_left_1</target_link>
+    <target_joint>Rev18</target_joint>
+    <driving_force_controller>/WATER_controller/water_right</driving_force_controller>
+    <joint_state_topic>/joint_states</joint_state_topic>
+  </plugin>
+
+  <plugin filename="libsimple_driving_force_plugin.so" name="simple_driving_force_right">
+    <target_link>propeller_right_1</target_link>
+    <target_joint>Rev19</target_joint>
+    <driving_force_controller>/WATER_controller/water_left</driving_force_controller>
+    <joint_state_topic>/joint_states</joint_state_topic>
+  </plugin>
+</gazebo>-->
+
+<!--Bouyancy Plugin-->
+<gazebo>
+  <plugin name="BuoyancyPlugin" filename="libBuoyancyPlugin.so">
+    <!-- a viscous liquid -->
+    <fluid_density>997</fluid_density>
+    <link name="base_link">
+      <volume>0.093233239</volume>
+      <center_of_volume>0.041985844365174226 0.5041551418509241 0.11753492516942377</center_of_volume>
+    </link>
+  </plugin>
 </gazebo>
 
 </robot>

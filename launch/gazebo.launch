@@ -1,11 +1,30 @@
 <launch>
-  <param command="$(find xacro)/xacro $(find WATER_description)/urdf/WATER.xacro" name="robot_description"/>
-  <node args="-param robot_description -urdf -model WATER" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="paused" value="true"/>
-    <arg name="use_sim_time" value="true"/>
-    <arg name="gui" value="true"/>
-    <arg name="headless" value="false"/>
-    <arg name="debug" value="false"/>
-  </include>
+  <!--Grouping to common namespace-->
+    <!--Robot Model in urdf-->
+    <param command="$(find xacro)/xacro $(find WATER_description)/urdf/WATER.xacro" name="robot_description"/>
+    <!--Spawning thr Robot-->
+    <node args="-param robot_description -urdf -model WATER" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
+
+    <!--<rosparam file="$(find WATER_description)/config/boat.yaml" command="load"/>-->
+
+    <!--Controlller Manager Node-
+    <node name="water_right" pkg="controller_manager" type="spawner" args="right_driving_force_controller" ns="WATER_controller" output="screen" respawn="false"/>
+
+    <node name="water_left" pkg="controller_manager" type="spawner" args="left_driving_force_controller" ns="WATER_controller" output="screen" respawn="false"/>-->
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="paused" value="true"/>
+      <arg name="use_sim_time" value="true"/>
+      <arg name="gui" value="true"/>
+      <arg name="headless" value="false"/>
+      <arg name="debug" value="false"/>
+    </include>
+
+    <!--Loading the controllers-
+    <rosparam command="load" file="$(find WATER_description)/launch/controller.yaml"/>
+    <node args="Rev18_position_controller Rev19_position_controller joint_state_controller" name="controller_spawner" output="screen" ns="/water" pkg="controller_manager" respawn="false" type="spawner"/>
+    <node name="robot_state_publisher" output="screen" pkg="robot_state_publisher" respawn="false" type="robot_state_publisher">
+      <remap from="/joint_states" to="/WATER/joint_states"/>
+    </node>-->
+
 </launch>

@@ -1,0 +1,52 @@
+WATER_controller:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  # Position Controllers --------------------------------------
+  Rev18_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Rev18
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Rev19_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Rev19
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+
+  # driving force controllers ----------------------------------
+  right_driving_force_controller:
+    type: driving_force_controller/DrivingForceController
+    twist_topic: /WATER_controller/twist
+    motor_command_topic: /WATER_controller/right_motor_controller/command
+    driving_force_command_topic: /WATER_controller/ship_controller/right_driving_force
+    characteristic_curve_file_name: right_motor
+    max_rotational_speed: 10
+    min_rotational_speed: -10
+    gradient_descent:
+      tolerance: 0.0001
+      alpha: 0.1
+    propeller:
+      turning_radius: 0.2
+      k2: 1
+      k1: 1
+      k0: 1
+      fluid_density: 998.233
+
+  left_driving_force_controller:
+    type: driving_force_controller/DrivingForceController
+    twist_topic: /WATER_controller/twist
+    motor_command_topic:  /WATER_controller/left_motor_controller/command
+    driving_force_command_topic: /WATER_controller/ship_controller/left_driving_force
+    characteristic_curve_file_name: left_motor
+    max_rotational_speed: 10
+    min_rotational_speed: -10
+    gradient_descent:
+      tolerance: 0.0001
+      alpha: 0.1
+    propeller:
+      turning_radius: 0.2
+      k2: 1
+      k1: 1
+      k0: 1
+      fluid_density: 998.233

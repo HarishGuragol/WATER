@@ -15,9 +15,11 @@ To see the camera images from the boat
 
 ### Updates Made
 1. Basic Design
+2. Changed the Propllers
+3. Made the Boat Mobile
 
 ### To be done
-1. Make the boat mobile.
+1. <del> Make the boat mobile. <del> (The boat doesn't actually move due to abence of water, but its mobile)
 2. Add the waste detection algorithm.
 3. Add the path planning algorithm.
 4. Modify the model according to our design.

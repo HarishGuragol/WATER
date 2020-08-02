@@ -9,7 +9,7 @@
 <link name="base_link">
   <inertial>
     <origin rpy="0 0 0" xyz="0.041985844365174226 0.5041551418509241 0.11753492516942377"/>
-    <mass value="731.907802985047"/>
+    <mass value="91"/>
     <inertia ixx="102.253408" ixy="0.944947" ixz="0.571694" iyy="75.226668" iyz="0.019964" izz="175.055626"/>
   </inertial>
   <visual>
@@ -74,19 +74,19 @@
 <!--Left Propller-->
 <link name="propeller_left_1">
   <inertial>
-    <origin rpy="0 0 0" xyz="-0.02469707240420338 8.693535857862145e-08 3.533814449951933e-07"/>
-    <mass value="0.4577791370132495"/>
-    <inertia ixx="0.00083" ixy="0.0" ixz="-0.0" iyy="0.000457" iyz="-0.0" izz="0.000457"/>
+    <origin rpy="0 0 0" xyz="-0.02465138415626883 -3.202893716913735e-07 -5.662137425588298e-15"/>
+    <mass value="0.861936288291951"/>
+    <inertia ixx="0.001968" ixy="-0.0" ixz="0.0" iyy="0.001151" iyz="-0.0" izz="0.001151"/>
   </inertial>
   <visual>
-    <origin rpy="0 0 0" xyz="0.521155 -0.767824 -0.713099"/>
+    <origin rpy="0 0 0" xyz="0.497574 -0.206555 -0.715"/>
     <geometry>
       <mesh filename="package://WATER_description/meshes/propeller_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
-    <origin rpy="0 0 0" xyz="0.521155 -0.767824 -0.713099"/>
+    <origin rpy="0 0 0" xyz="0.497574 -0.206555 -0.715"/>
     <geometry>
       <mesh filename="package://WATER_description/meshes/propeller_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
@@ -94,23 +94,23 @@
 </link>
 
 <!--Right Propeller-->
-<link name="propeller_right_1">
+<link name="propeller_left_3">
   <inertial>
-    <origin rpy="0 0 0" xyz="-0.024697375521022857 -3.2028937094197296e-07 -8.881784197001252e-14"/>
-    <mass value="0.4577791370132495"/>
-    <inertia ixx="0.00083" ixy="-0.0" ixz="-0.0" iyy="0.000457" iyz="-0.0" izz="0.000457"/>
+    <origin rpy="0 0 0" xyz="-0.024651081039449574 8.693535802350993e-08 3.5338152826192015e-07"/>
+    <mass value="0.861936288291951"/>
+    <inertia ixx="0.001968" ixy="0.0" ixz="0.0" iyy="0.001151" iyz="-0.0" izz="0.001151"/>
   </inertial>
   <visual>
-    <origin rpy="0 0 0" xyz="0.497574 -0.206555 -0.715"/>
+    <origin rpy="0 0 0" xyz="0.521155 -0.767824 -0.713099"/>
     <geometry>
-      <mesh filename="package://WATER_description/meshes/propeller_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://WATER_description/meshes/propeller_left_3.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
-    <origin rpy="0 0 0" xyz="0.497574 -0.206555 -0.715"/>
+    <origin rpy="0 0 0" xyz="0.521155 -0.767824 -0.713099"/>
     <geometry>
-      <mesh filename="package://WATER_description/meshes/propeller_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://WATER_description/meshes/propeller_left_3.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -157,16 +157,16 @@
   <parent link="motor_support_left_1"/>
   <child link="propeller_left_1"/>
   <axis xyz="-1.0 0.0 0.0"/>
-  <limit effort="50" velocity="1"/>
+  <limit effort="300" velocity="10"/>
 </joint>
 
 <!--Right Propller Joint-->
 <joint name="Rev19" type="continuous">
   <origin rpy="0 0 0" xyz="-0.060785 0.0 0.525"/>
   <parent link="motor_support_right_1"/>
-  <child link="propeller_right_1"/>
+  <child link="propeller_left_3"/>
   <axis xyz="-1.0 0.0 -0.0"/>
-  <limit effort="50" velocity="1"/>
+  <limit effort="300" velocity="10"/>
 </joint>
 
 <!--Camera Joint-->
@@ -175,6 +175,30 @@
   <parent link="motor_support_right_1"/>
   <child link="camera_link_1"/>
 </joint>
+
+<!--Tranmission for Right Propller-->
+<transmission name="simple_trans_right">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="Rev19">
+    <hardwareInterface>VelocityJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="Right_propeller_motor">
+    <mechanicalReduction>1</mechanicalReduction>
+    <hardwareInterface>VelocityJointInterface</hardwareInterface>
+  </actuator>
+</transmission>
+
+<!--Tranmission for Left Propller-->
+<transmission name="simple_trans_left">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="Rev18">
+    <hardwareInterface>VelocityJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="Left_propeller_motor">
+    <mechanicalReduction>1</mechanicalReduction>
+    <hardwareInterface>VelocityJointInterface</hardwareInterface>
+  </actuator>
+</transmission>
 
 <!--Camera Plugin-->
   <gazebo reference="camera_link_1">
