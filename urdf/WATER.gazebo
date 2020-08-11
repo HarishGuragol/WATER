@@ -49,6 +49,13 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
+<gazebo reference="balance_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
 
 <!--Gazbeo ROS Controller PLugin-->
 <gazebo>
@@ -74,6 +81,45 @@
   </plugin>
 </gazebo>
 
+<!--Camera Plugin-->
+  <gazebo reference="camera_link_1">
+    <sensor type="camera" name="camera1">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>800</width>
+          <height>800</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>rrbot/camera1</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+
 <!--Try Plugins
 <gazebo>
   <plugin filename="libsimple_driving_force_plugin.so" name="simple_driving_force_left">
@@ -91,16 +137,90 @@
   </plugin>
 </gazebo>-->
 
+<!--Lift Drag Plugin-->
+<gazebo>
+  <plugin name="rotor_1" filename="libLiftDragPlugin.so">
+      <a0>2</a0>
+      <alpha_stall>4</alpha_stall>
+      <cla>10.2500</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>-0.025</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <area>0.002</area>
+      <air_density>997</air_density>
+      <cp>0.084 0 0</cp>
+      <forward>1 0 0</forward>
+      <upward>0 0 1</upward>
+      <link_name>propeller_left_1</link_name>
+    </plugin>
+</gazebo>
+
+<gazebo>
+  <plugin name="rotor_2" filename="libLiftDragPlugin.so">
+      <a0>2</a0>
+      <alpha_stall>4</alpha_stall>
+      <cla>10.2500</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>-0.025</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <area>0.002</area>
+      <air_density>997</air_density>
+      <cp>0.084 0 0</cp>
+      <forward>1 0 0</forward>
+      <upward>0 0 1</upward>
+      <link_name>propeller_left_3</link_name>
+    </plugin>
+</gazebo>
+
 <!--Bouyancy Plugin-->
 <gazebo>
   <plugin name="BuoyancyPlugin" filename="libBuoyancyPlugin.so">
-    <!-- a viscous liquid -->
-    <fluid_density>997</fluid_density>
+    <fluid_density>997.8</fluid_density>
     <link name="base_link">
-      <volume>0.093233239</volume>
-      <center_of_volume>0.041985844365174226 0.5041551418509241 0.11753492516942377</center_of_volume>
+      <center_of_volume>0.041985844365174226 0.50899 0.11753492516942377</center_of_volume>
+      <volume>0.09972</volume>
     </link>
   </plugin>
 </gazebo>
+
+<!--USV Sim Plugin-->
+<gazebo >
+  <plugin name='usv_dynamics_wamv_dynamics_plugin' filename='libgazebo_usv_dynamics_plugin.so'>
+      <bodyName>base_link</bodyName>
+      <waterLevel>0</waterLevel>
+      <nDotR>0.0</nDotR>
+      <waterDensity>997.8</waterDensity>
+      <xDotU>0.0</xDotU>
+      <yDotV>0.0</yDotV>
+      <xU>51.3</xU>
+      <xUU>72 .4</xUU>
+      <yV>40.0</yV>
+      <yVV>0.0</yVV>
+      <zW>500.0</zW>
+      <kP>0.0</kP>
+      <mQ>0.0</mQ>
+      <nR>0.0</nR>
+      <nRR>0.0</nRR>
+      <hullRadius>0.213</hullRadius>
+      <boatWidth>0.5</boatWidth>
+      <boatLength>0.5</boatLength>
+      <length_n>2</length_n>
+      <wave_model>ocean_waves</wave_model>
+    </plugin>
+</gazebo>
+
+<!--Custom Plugin-->
+<!-- Add plugin Propulsion -->
+    <gazebo>
+        <plugin name="propulsion_plugin" filename="libpropulsion_plugin.so">
+            <propulsionTopicName>/propulsion</propulsionTopicName>
+            <NameLinkToApplyPropulsion>base_link</NameLinkToApplyPropulsion>
+            <rate>2.0</rate>
+        </plugin>
+    </gazebo>
 
 </robot>

@@ -2,14 +2,14 @@
 <robot name="WATER" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 <xacro:include filename="$(find WATER_description)/urdf/materials.xacro" />
-<xacro:include filename="$(find WATER_description)/urdf/WATER.trans" />
+<!--<xacro:include filename="$(find WATER_description)/urdf/WATER.trans" />-->
 <xacro:include filename="$(find WATER_description)/urdf/WATER.gazebo" />
 
 <!--Base Link/ Boat Hull-->
 <link name="base_link">
   <inertial>
     <origin rpy="0 0 0" xyz="0.041985844365174226 0.5041551418509241 0.11753492516942377"/>
-    <mass value="91"/>
+    <mass value="100.05"/>
     <inertia ixx="102.253408" ixy="0.944947" ixz="0.571694" iyy="75.226668" iyz="0.019964" izz="175.055626"/>
   </inertial>
   <visual>
@@ -31,7 +31,7 @@
 <link name="motor_support_left_1">
   <inertial>
     <origin rpy="0 0 0" xyz="-0.00038428463028200577 -1.931763642015749e-05 0.2794011308123638"/>
-    <mass value="10.796675596228138"/>
+    <mass value="1"/>
     <inertia ixx="0.281164" ixy="-2.4e-05" ixz="0.002165" iyy="0.281586" iyz="-0.0003" izz="0.004869"/>
   </inertial>
   <visual>
@@ -53,7 +53,7 @@
 <link name="motor_support_right_1">
   <inertial>
     <origin rpy="0 0 0" xyz="-0.005187497162707055 0.13542109450750728 0.37290152359449974"/>
-    <mass value="20.721819356800275"/>
+    <mass value="1"/>
     <inertia ixx="1.104335" ixy="0.022331" ixz="0.012255" iyy="0.483329" iyz="-0.286828" izz="0.631875"/>
   </inertial>
   <visual>
@@ -75,7 +75,7 @@
 <link name="propeller_left_1">
   <inertial>
     <origin rpy="0 0 0" xyz="-0.02465138415626883 -3.202893716913735e-07 -5.662137425588298e-15"/>
-    <mass value="0.861936288291951"/>
+    <mass value="0.025"/>
     <inertia ixx="0.001968" ixy="-0.0" ixz="0.0" iyy="0.001151" iyz="-0.0" izz="0.001151"/>
   </inertial>
   <visual>
@@ -97,7 +97,7 @@
 <link name="propeller_left_3">
   <inertial>
     <origin rpy="0 0 0" xyz="-0.024651081039449574 8.693535802350993e-08 3.5338152826192015e-07"/>
-    <mass value="0.861936288291951"/>
+    <mass value="0.025"/>
     <inertia ixx="0.001968" ixy="0.0" ixz="0.0" iyy="0.001151" iyz="-0.0" izz="0.001151"/>
   </inertial>
   <visual>
@@ -119,7 +119,7 @@
 <link name="camera_link_1">
   <inertial>
     <origin rpy="0 0 0" xyz="3.962738093221674e-08 -1.2711576602431052e-07 0.025000000000001354"/>
-    <mass value="7.85"/>
+    <mass value="0.05"/>
     <inertia ixx="0.027778" ixy="0.000684" ixz="-0.0" iyy="0.008201" iyz="0.0" izz="0.032708"/>
   </inertial>
   <visual>
@@ -133,6 +133,28 @@
     <origin rpy="0 0 0" xyz="0.447271 -0.462171 -0.69"/>
     <geometry>
       <mesh filename="package://WATER_description/meshes/camera_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<!--Balance Link-->
+<link name="balance_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.024984655377752518 0.0008720125959205127 0.049999999999999184"/>
+    <mass value="2.1"/>
+    <inertia ixx="0.059224" ixy="0.001711" ixz="0.0" iyy="0.010281" iyz="-0.0" izz="0.053151"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.332254 -0.514292 -0.19"/>
+    <geometry>
+      <mesh filename="package://WATER_description/meshes/balance_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.332254 -0.514292 -0.19"/>
+    <geometry>
+      <mesh filename="package://WATER_description/meshes/balance_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -176,15 +198,21 @@
   <child link="camera_link_1"/>
 </joint>
 
+<joint name="Rigid21" type="fixed">
+  <origin rpy="0 0 0" xyz="0.332254 0.514292 0.19"/>
+  <parent link="base_link"/>
+  <child link="balance_1"/>
+</joint>
+
 <!--Tranmission for Right Propller-->
 <transmission name="simple_trans_right">
   <type>transmission_interface/SimpleTransmission</type>
   <joint name="Rev19">
-    <hardwareInterface>VelocityJointInterface</hardwareInterface>
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
   </joint>
   <actuator name="Right_propeller_motor">
     <mechanicalReduction>1</mechanicalReduction>
-    <hardwareInterface>VelocityJointInterface</hardwareInterface>
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
   </actuator>
 </transmission>
 
@@ -192,50 +220,12 @@
 <transmission name="simple_trans_left">
   <type>transmission_interface/SimpleTransmission</type>
   <joint name="Rev18">
-    <hardwareInterface>VelocityJointInterface</hardwareInterface>
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
   </joint>
   <actuator name="Left_propeller_motor">
     <mechanicalReduction>1</mechanicalReduction>
-    <hardwareInterface>VelocityJointInterface</hardwareInterface>
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
   </actuator>
 </transmission>
-
-<!--Camera Plugin-->
-  <gazebo reference="camera_link_1">
-    <sensor type="camera" name="camera1">
-      <update_rate>30.0</update_rate>
-      <camera name="head">
-        <horizontal_fov>1.3962634</horizontal_fov>
-        <image>
-          <width>800</width>
-          <height>800</height>
-          <format>R8G8B8</format>
-        </image>
-        <clip>
-          <near>0.02</near>
-          <far>300</far>
-        </clip>
-        <noise>
-          <type>gaussian</type>
-          <mean>0.0</mean>
-          <stddev>0.007</stddev>
-        </noise>
-      </camera>
-      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-        <alwaysOn>true</alwaysOn>
-        <updateRate>0.0</updateRate>
-        <cameraName>rrbot/camera1</cameraName>
-        <imageTopicName>image_raw</imageTopicName>
-        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-        <frameName>camera_link</frameName>
-        <hackBaseline>0.07</hackBaseline>
-        <distortionK1>0.0</distortionK1>
-        <distortionK2>0.0</distortionK2>
-        <distortionK3>0.0</distortionK3>
-        <distortionT1>0.0</distortionT1>
-        <distortionT2>0.0</distortionT2>
-      </plugin>
-    </sensor>
-  </gazebo>
 
 </robot>

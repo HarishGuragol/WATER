@@ -13,6 +13,7 @@
     <node name="water_left" pkg="controller_manager" type="spawner" args="left_driving_force_controller" ns="WATER_controller" output="screen" respawn="false"/>-->
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find WATER_description)/worlds/river.world"/>
       <arg name="paused" value="true"/>
       <arg name="use_sim_time" value="true"/>
       <arg name="gui" value="true"/>

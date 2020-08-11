@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+<!--     <include>
+      <uri>model://water_level</uri>
+    </include> -->
+
+    <include name="ocean">
+      <uri>model://ocean</uri>
+    </include>
+
+    <!--<model name="terrain">
+      <include>
+        <uri>model://winding_valley_heightmap</uri>
+      </include>
+    </model>-->
+
+    <physics name='default_physics' default='0' type='ode'>
+       <ode>
+        <solver>
+          <type>quick</type>
+          <iters>100</iters>
+          <sor>1.0</sor>
+        </solver>
+        <constraints>
+          <cfm>0.0</cfm>
+          <erp>0.9</erp>
+          <contact_max_correcting_vel>0.1</contact_max_correcting_vel>
+          <contact_surface_layer>0.0</contact_surface_layer>
+        </constraints>
+      </ode>
+      <real_time_update_rate>-1</real_time_update_rate>
+    </physics>
+
+  </world>
+</sdf>

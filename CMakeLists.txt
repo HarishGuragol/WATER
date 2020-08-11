@@ -2,13 +2,15 @@ cmake_minimum_required(VERSION 2.8.3)
 project(WATER_description)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   rospy
+  roscpp
+  gazebo_ros
   urdf
   controller_manager
   joint_state_controller
@@ -16,7 +18,14 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(gazebo REQUIRED)
+
+link_directories(${GAZEBO_LIBRARY_DIRS})
+include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
+
+## Propulsion plugin
+add_library(propulsion_plugin src/propulion.cpp)
+target_link_libraries(propulsion_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -107,7 +116,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES fusion2urdf
-#  CATKIN_DEPENDS rospy
+#  CATKIN_DEPENDS rospy roscpp
 #  DEPENDS system_lib
 )
 
